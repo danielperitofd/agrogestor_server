@@ -1,0 +1,64 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}{{ propriedade.nome }}{% endblock %}
+{% block content %}
+
+<div class="container mt-4">
+  <!-- Cabeçalho -->
+  <div class="text-center mb-4">
+    <h2 class="fw-bold text-primary">{{ propriedade.nome }}</h2>
+    <p class="text-muted">Detalhes completos da propriedade</p>
+    <hr class="w-50 mx-auto">
+  </div>
+
+  <!-- Card principal -->
+  <div class="card shadow-lg border-0 mb-4">
+    <div class="card-body">
+      <div class="row gy-3">
+        <div class="col-md-6">
+          <p><i class="bi bi-geo-alt-fill text-danger me-2"></i>
+            <strong>Localização:</strong> {{ propriedade.localizacao }}
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p><i class="bi bi-bounding-box text-success me-2"></i>
+            <strong>Área Total:</strong> {{ propriedade.area_hectares }} ha
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p><i class="bi bi-seedling text-success me-2"></i>
+            <strong>Cultura Principal:</strong> {{ propriedade.cultura_principal }}
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p><i class="bi bi-bar-chart-line text-warning me-2"></i>
+            <strong>Produção Anual:</strong> {{ propriedade.producao_anual }}
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p><i class="bi bi-cash-coin text-success me-2"></i>
+            <strong>Valor Estimado:</strong> R$ {{ propriedade.valor_terra }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slideshow -->
+  <div class="card shadow border-0">
+    <div class="card-header bg-primary text-white">
+      <i class="bi bi-images me-2"></i> Galeria de Imagens da Propriedade
+    </div>
+    <div class="card-body p-0">
+      {% include "dashboard/includes/slideshow.html" with propriedade=propriedade %}
+    </div>
+  </div>
+
+  <!-- Botão de voltar -->
+  <div class="text-center mt-4">
+    <a href="{% url 'propriedades' %}" class="btn btn-outline-secondary">
+      <i class="bi bi-arrow-left"></i> Voltar para Lista
+    </a>
+  </div>
+</div>
+
+{% endblock %}

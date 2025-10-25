@@ -1,0 +1,253 @@
+
+{% extends 'dashboard/base.html' %}
+{% block content %}
+
+  <div class="container-fluid min-vh-100 d-flex justify-content-center align-items-start pt-5">
+    <div class="card shadow p-4 w-100" style="max-width: 800px;">
+      <h2 class="mb-4 text-center">Lançamento de Despesas</h2>
+
+      <!-- Categoria Principal -->
+      <div class="mb-3">
+        <label for="categoriaPrincipal">Categoria de Despesa</label>
+        <select class="form-select" id="categoriaPrincipal">
+          <option value="">Selecione...</option>
+          <option value="encarregado">Encarregado</option>
+          <option value="vaqueiro">Vaqueiros</option>
+          <option value="assistencia">Assistência Técnica e Combustíveis</option>
+          <option value="compras_animais">Compras de Animais</option>
+        </select>
+      </div>
+
+      <!-- Encarregado -->
+      <div id="encarregadoSection" class="form-section hidden">
+        <label for="nomeEncarregado">Nome do Encarregado</label>
+        <select class="form-select mb-2" id="nomeEncarregado">
+          <option value="">Selecione...</option>
+          <option>João</option>
+          <option>Maria</option>
+          <option>Carlos</option>
+        </select>
+        <input type="text" class="form-control" placeholder="Observação (opcional)">
+      </div>
+
+      <!-- Vaqueiros -->
+      <div id="vaqueiroSection" class="form-section hidden">
+        <label for="nomeVaqueiro">Nome do Vaqueiro</label>
+        <select class="form-select mb-2" id="nomeVaqueiro">
+          <option value="">Selecione...</option>
+          <option>José</option>
+          <option>Pedro</option>
+          <option>Antônio</option>
+        </select>
+        <input type="text" class="form-control" placeholder="Observação (opcional)">
+      </div>
+
+      <!-- Assistência Técnica -->
+      <div id="assistenciaSection" class="form-section hidden">
+        <label>Fornecedor</label>
+        <select class="form-select mb-2" id="fornecedorSelect">
+          <option value="">Selecione...</option>
+          <option>CNPJ - AgroTech</option>
+          <option>CNPJ - Combustíveis BR</option>
+        </select>
+        <div class="form-check mb-2">
+          <input class="form-check-input" type="checkbox" id="fornecedorLocalCheck">
+          <label class="form-check-label" for="fornecedorLocalCheck">Fornecedor Local</label>
+        </div>
+        <div id="fornecedorLocalFields" class="hidden">
+          <input type="text" class="form-control mb-2" placeholder="Nome do fornecedor local">
+          <input type="text" class="form-control mb-2" placeholder="Telefone">
+          <input type="email" class="form-control mb-2" placeholder="Email (opcional)">
+          <input type="text" class="form-control" placeholder="Descrição (opcional)">
+        </div>
+      </div>
+
+      <!-- Compras de Animais -->
+      <div id="comprasAnimaisSection" class="form-section hidden">
+        <label for="fazendaSelect">Fazenda/Propriedade</label>
+        <select class="form-select mb-2" id="fazendaSelect">
+          <option value="">Selecione...</option>
+          <option value="sj_vacas">São José - Vacas</option>
+          <option value="sj_cabras">São José - Cabras</option>
+          <option value="cavalos">Cavalos</option>
+        </select>
+
+        <div id="subcategoriaAnimais" class="hidden">
+          <label for="tipoAnimalSelect">Tipo de Animal</label>
+          <select class="form-select" id="tipoAnimalSelect"></select>
+        </div>
+      </div>
+
+      <!-- Tipo da Despesa -->
+      <div class="mb-3">
+        <label for="tipoDespesa">Tipo da Despesa</label>
+        <select class="form-select" id="tipoDespesa">
+          <option value="">Selecione...</option>
+          <option>Remuneração</option>
+          <option>Desp. Administrativas</option>
+          <option>Desp. Financeiras</option>
+          <option>Desp. Tributárias</option>
+          <option>Cercas - M. Obra</option>
+          <option>Cercas - Materiais</option>
+          <option>Pastagens - MO</option>
+          <option>Pastagens - Insumos</option>
+          <option>Palma - MO</option>
+          <option>Palma - Insumos</option>
+          <option>Silagem</option>
+          <option>Supl. Mineral</option>
+          <option>Concentrados</option>
+          <option>Ins. Veterinários</option>
+          <option>Ordenha / Resfriadores</option>
+          <option>Manut. Tratores</option>
+          <option>Manut. Veículos</option>
+          <option>Manut. Equipamentos</option>
+          <option>Manut. Construções</option>
+          <option>Materiais e Utensílios</option>
+          <option>Energ. Elétrica</option>
+          <option>Manut. Açudes</option>
+          <option>Água</option>
+          <option>Fretes</option>
+          <option>Combustíveis</option>
+          <option>Desp. Gerais</option>
+        </select>
+      </div>
+
+      <!-- Valor da Despesa -->
+      <div class="mb-3">
+        <label for="valorDespesa">Valor da Despesa (R$)</label>
+        <input type="text" class="form-control" id="valorDespesa" placeholder="0,00">
+      </div>
+
+      <!-- Rateio por Centro de Custo -->
+      <div class="form-section">
+        <label>Rateio por Centro de Custo</label>
+        <div id="rateioContainer">
+          <div class="rateio-row">
+            <div>
+              <div class="small-label">Centro de Custo</div>
+              <select class="form-select" id="centro1">
+                <option value="">Selecione...</option>
+                <option>Vacas</option>
+                <option>Cabras</option>
+                <option>Cavalos</option>
+                <option>Palma</option>
+                <option>Pastagens</option>
+                <option>Equipamentos</option>
+              </select>
+            </div>
+            <div>
+              <div class="small-label">Rateio (%)</div>
+              <input type="number" class="form-control" id="percentual1" min="0" max="100" value="0">
+            </div>
+            <div>
+              <div class="small-label">Resta (%)</div>
+              <input type="number" class="form-control" id="resta1" disabled value="100">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botão de Salvar -->
+      <button class="btn btn-success mt-3" onclick="validarRateio()">Salvar</button>
+    </div>
+  </div>
+
+
+  <style>
+    .hidden { display: none; }
+    .form-section { margin-top: 20px; }
+    .rateio-row { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+    .rateio-row input[type="number"] { width: 80px; }
+    .rateio-row input[disabled] { background-color: #f0f0f0; }
+    .small-label { font-size: 12px; margin-bottom: 2px; }
+    .card { transition: all 0.3s ease-in-out; }
+  </style>
+
+
+  <script>
+    // Máscara de moeda
+    const valorInput = document.getElementById('valorDespesa');
+    valorInput.addEventListener('input', () => {
+      let valor = valorInput.value.replace(/\D/g, '');
+      valor = (parseInt(valor) / 100).toFixed(2);
+      valorInput.value = 'R$ ' + valor.replace('.', ',');
+    });
+
+    // Atualiza campo "Resta"
+    const percentualInput = document.getElementById('percentual1');
+    const restaInput = document.getElementById('resta1');
+
+    percentualInput.addEventListener('input', () => {
+      const val = parseInt(percentualInput.value) || 0;
+      const resta = 100 - val;
+      restaInput.value = resta >= 0 ? resta : 0;
+    });
+
+        // Validação
+    function validarRateio() {
+      const val = parseInt(percentualInput.value) || 0;
+      if (val > 100) {
+        alert('O percentual de rateio não pode ultrapassar 100%.');
+      } else {
+        alert('Formulário validado! Pronto para salvar.');
+      }
+    }
+
+    // Exibição dinâmica de seções com base na categoria principal
+    const categoria = document.getElementById('categoriaPrincipal');
+    const sections = {
+      encarregado: document.getElementById('encarregadoSection'),
+      vaqueiro: document.getElementById('vaqueiroSection'),
+      assistencia: document.getElementById('assistenciaSection'),
+      compras_animais: document.getElementById('comprasAnimaisSection')
+    };
+
+    categoria.addEventListener('change', () => {
+      Object.values(sections).forEach(sec => sec.classList.add('hidden'));
+      const selected = categoria.value;
+      if (sections[selected]) sections[selected].classList.remove('hidden');
+    });
+
+    // Fornecedor Local toggle
+    const localCheck = document.getElementById('fornecedorLocalCheck');
+    const localFields = document.getElementById('fornecedorLocalFields');
+    const fornecedorSelect = document.getElementById('fornecedorSelect');
+
+    localCheck.addEventListener('change', () => {
+      if (localCheck.checked) {
+        localFields.classList.remove('hidden');
+        fornecedorSelect.disabled = true;
+      } else {
+        localFields.classList.add('hidden');
+        fornecedorSelect.disabled = false;
+      }
+    });
+
+    // Subcategorias de animais
+    const fazendaSelect = document.getElementById('fazendaSelect');
+    const tipoAnimalSelect = document.getElementById('tipoAnimalSelect');
+    const subcategoriaAnimais = document.getElementById('subcategoriaAnimais');
+
+    const subcategorias = {
+      sj_vacas: ['Bovinos - Machos', 'Bovinos - Fêmeas'],
+      sj_cabras: ['Caprinos - Machos', 'Caprinos - Fêmeas', 'Ovinos - Machos', 'Ovinos - Fêmeas'],
+      cavalos: ['Equinos - Machos', 'Equinos - Fêmeas']
+    };
+
+    fazendaSelect.addEventListener('change', () => {
+      const fazenda = fazendaSelect.value;
+      tipoAnimalSelect.innerHTML = '';
+      if (subcategorias[fazenda]) {
+        subcategorias[fazenda].forEach(tipo => {
+          const opt = document.createElement('option');
+          opt.textContent = tipo;
+          tipoAnimalSelect.appendChild(opt);
+        });
+        subcategoriaAnimais.classList.remove('hidden');
+      } else {
+        subcategoriaAnimais.classList.add('hidden');
+      }
+    });
+  </script>
+
+{% endblock %}

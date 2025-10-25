@@ -1,0 +1,79 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% block title %}Lista de Colaboradores{% endblock %}
+{% block content %}
+
+<div class="container py-4">
+
+  <!-- Cabeçalho -->
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <h2 class="fw-semibold mb-0">
+      👷‍♂️ Lista de Colaboradores
+    </h2>
+    <a href="{% url 'cadastrar_colaborador' %}" class="btn btn-outline-primary">
+      <i class="fa-solid fa-plus me-2"></i>Novo Colaborador
+    </a>
+  </div>
+
+  <!-- Card principal -->
+  <div class="card shadow-sm border-0 rounded-4">
+    <div class="card-body p-0">
+      
+      <div class="table-responsive">
+        <table class="table align-middle mb-0 table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>Nome</th>
+              <th>Tipo</th>
+              <th>CPF</th>
+              <th>RG</th>
+              <th>Telefone</th>
+              <th>Email</th>
+              <th>Foto</th>
+              <th class="text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for colaborador in colaboradores %}
+            <tr>
+              <td class="fw-medium">{{ colaborador.nome }}</td>
+              <td>{{ colaborador.get_tipo_display }}</td>
+              <td><span class="text-monospace">{{ colaborador.cpf }}</span></td>
+              <td>{{ colaborador.rg }}</td>
+              <td>{{ colaborador.telefone }}</td>
+              <td>{{ colaborador.email|default:"-" }}</td>
+              <td>
+                {% if colaborador.foto %}
+                  <img src="{{ colaborador.foto.url }}" alt="{{ colaborador.nome }}" class="rounded-circle border" width="40" height="40">
+                {% else %}
+                  <span class="text-muted">—</span>
+                {% endif %}
+              </td>
+              <td class="text-center">
+                <a href="{% url 'editar_colaborador' colaborador.id %}" class="btn btn-sm btn-outline-success me-2" title="Editar">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </a>
+                <a href="{% url 'excluir_colaborador' colaborador.id %}" 
+                   class="btn btn-sm btn-outline-danger"
+                   title="Excluir"
+                   onclick="return confirm('Tem certeza que deseja excluir {{ colaborador.nome }}?')">
+                  <i class="fa-solid fa-trash"></i>
+                </a>
+              </td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="8" class="text-center py-4 text-muted">
+                <i class="fa-regular fa-face-frown me-2"></i>Nenhum colaborador cadastrado.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

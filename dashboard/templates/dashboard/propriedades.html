@@ -1,0 +1,155 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Propriedades{% endblock %}
+{% block content %}
+
+<div class="container py-4">
+
+  <!-- Cabeçalho -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2 class="fw-bold text-success mb-1">
+        <i class="fa-solid fa-tractor me-2"></i>Minhas Propriedades
+      </h2>
+      <p class="text-muted">Você possui {{ propriedades|length }} fazenda{{ propriedades|length|pluralize:"s" }} cadastrada{{ propriedades|length|pluralize:"s" }}</p>
+    </div>
+    <a href="{% url 'cadas_propriedades' %}" class="btn btn-success">
+      <i class="fa-solid fa-plus me-1"></i> Nova Propriedade
+    </a>
+  </div>
+
+  <!-- Filtro -->
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body d-flex flex-wrap gap-3 align-items-center">
+      <label for="seletorPropriedade" class="fw-semibold me-2">
+        <i class="fa-solid fa-filter me-1"></i> Filtrar:
+      </label>
+      <select id="seletorPropriedade" onchange="filtrarPropriedade()" class="form-select w-auto">
+        <option value="todas">Todas</option>
+        {% for prop in propriedades %}
+          <option value="{{ prop.id }}">{{ prop.nome }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <!-- Resumo -->
+  <div class="row g-4 mb-4">
+    <div class="col-md-4">
+      <div class="card shadow-sm text-center p-3 border-0">
+        <h5 class="text-muted mb-1">Área Total (ha)</h5>
+        <h3 class="fw-bold text-success">{{ area_total }}</h3>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm text-center p-3 border-0">
+        <h5 class="text-muted mb-1">Produção Esperada</h5>
+        <h3 class="fw-bold text-success">{{ producao_total }}</h3>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card shadow-sm p-3 border-0">
+        <h5 class="text-muted mb-3 text-center">Localização</h5>
+        <div id="mapPropriedades" class="w-100 rounded" style="height: 200px;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slideshow -->
+  {% if propriedade %}
+  <div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+      <h4 class="fw-semibold mb-3">
+        <i class="fa-solid fa-image me-2"></i>Fotos da Fazenda {{ propriedade.nome }}
+      </h4>
+
+      <div class="position-relative">
+        {% for foto in propriedade.fotos.all %}
+          <div class="mySlides fade text-center">
+            <img src="{{ foto.url }}" class="img-fluid rounded shadow-sm" alt="Foto da fazenda {{ propriedade.nome }}" style="max-height: 400px;">
+          </div>
+        {% endfor %}
+
+        <a class="position-absolute top-50 start-0 translate-middle-y text-dark fs-3 px-3" onclick="plusSlides(-1)">❮</a>
+        <a class="position-absolute top-50 end-0 translate-middle-y text-dark fs-3 px-3" onclick="plusSlides(1)">❯</a>
+      </div>
+
+      <div class="text-center mt-3">
+        {% for foto in propriedade.fotos.all %}
+          <span class="dot mx-1" onclick="currentSlide({{ forloop.counter }})" style="cursor:pointer; height:12px; width:12px; background:#bbb; border-radius:50%; display:inline-block;"></span>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Tabela de propriedades -->
+  <div class="card shadow-sm border-0">
+    <div class="card-body">
+      <h4 class="fw-semibold mb-3 text-success">
+        <i class="fa-solid fa-list me-2"></i>Minhas Propriedades
+      </h4>
+
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-light">
+            <tr>
+              <th>Nome</th>
+              <th>Área (ha)</th>
+              <th>Rendimento Estimado</th>
+              <th class="text-center">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for prop in propriedades %}
+              <tr>
+                <td>{{ prop.nome }}</td>
+                <td>{{ prop.area }}</td>
+                <td>{{ prop.rendimento }}</td>
+                <td class="text-center">
+                  <a href="{% url 'detalhe_propriedade' prop.pk %}" class="btn btn-sm btn-outline-info me-1" title="Detalhes">
+                    <i class="fa-solid fa-eye"></i>
+                  </a>
+                  <a href="{% url 'editar_propriedade' prop.id %}" class="btn btn-sm btn-outline-warning me-1" title="Editar">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </a>
+                  <a href="{% url 'excluir_propriedade' prop.id %}" class="btn btn-sm btn-outline-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja excluir esta propriedade?')">
+                    <i class="fa-solid fa-trash"></i>
+                  </a>
+                </td>
+              </tr>
+            {% empty %}
+              <tr><td colspan="4" class="text-center text-muted py-4">Nenhuma propriedade cadastrada.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Script do slideshow -->
+<script>
+let slideIndex = 1;
+showSlides(slideIndex);
+
+function plusSlides(n) { showSlides(slideIndex += n); }
+function currentSlide(n) { showSlides(slideIndex = n); }
+
+function showSlides(n) {
+  let i;
+  let slides = document.getElementsByClassName("mySlides");
+  let dots = document.getElementsByClassName("dot");
+  if (slides.length === 0) return;
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  for (i = 0; i < slides.length; i++) slides[i].style.display = "none";
+  for (i = 0; i < dots.length; i++) dots[i].style.background = "#bbb";
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].style.background = "#198754"; // verde bootstrap
+}
+
+setInterval(() => { plusSlides(1); }, 5000);
+</script>
+
+{% endblock %}

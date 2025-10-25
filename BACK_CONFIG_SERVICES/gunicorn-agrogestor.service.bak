@@ -1,0 +1,12 @@
+[Unit]
+Description=Gunicorn daemon for Django project agrogestor
+After=network.target
+
+[Service]
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/agrogestor_server
+ExecStart=/var/www/agrogestor_server/.venv/bin/gunicorn --workers 3 --bind 127.0.0.1:8002 agrogestor.wsgi:application
+
+[Install]
+WantedBy=multi-user.target

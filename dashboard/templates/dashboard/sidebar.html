@@ -1,0 +1,41 @@
+{% load static %}
+
+
+<div class="text-center mb-4">
+  <div class="avatar-story">
+    <img src="{% static 'images/mayra_almeida.JPG' %}" alt="Daniel">
+  </div>
+  <p class="mt-2 mb-0 fw-bold">Mayra Almeida</p>
+</div>
+
+
+<h2 class="text-center fw-bold mb-4">AgroGestor🌿</h2>
+
+<ul class="nav flex-column">
+  <li class="nav-item text-muted fw-bold px-3">GERAL</li>
+  <li class="nav-item"><a class="nav-link" href="{% url 'welcome' %}"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
+  <li class="nav-item"><a class="nav-link" href="{% url 'propriedades' %}"><i data-lucide="map"></i> Propriedades</a></li>
+
+  <li class="nav-item text-muted fw-bold px-3 mt-3">FINANCEIRO</li>
+  <li class="nav-item"><a class="nav-link" href="{% url 'lancamentos' %}"><i data-lucide="file-text"></i> Lançamentos</a></li>
+  <li class="nav-item"><a class="nav-link" href="{% url 'lista_despesas' %}"><i data-lucide="file-text"></i> Lista Despesas</a></li>
+
+  <li class="nav-item text-muted fw-bold px-3 mt-3">CADASTROS</li>
+  <li class="nav-item"><a class="nav-link" href="{% url 'cadas_fornecedores' %}"><i data-lucide="users"></i> Fornecedores</a></li>
+  <li class="nav-item"><a class="nav-link" href="{% url 'cadas_propriedades' %}"><i data-lucide="home"></i> Cadastrar Propriedades</a></li>
+  <li class="nav-item"><a class="nav-link" href="{% url 'cadastrar_colaborador' %}"><i data-lucide="users"></i> Colaboradores</a></li>
+
+  <li class="nav-item mt-3">
+    <button class="btn btn-outline-secondary w-100 text-start submenu-toggle">
+      <i data-lucide="bar-chart-2"></i> Relatórios <span class="float-end">▾</span>
+    </button>
+    <ul class="list-unstyled submenu-links mt-2 ps-3" style="display: none;">
+      <li><a class="nav-link" href="{% url 'relcaixa_sjvacas' %}">SJ Vacas</a></li>
+      <li><a class="nav-link" href="{% url 'relcaixa_sjcabras' %}">SJ Cabras</a></li>
+      <li><a class="nav-link" href="{% url 'relcaixa_cavalos' %}">Cavalos</a></li>
+      <li><a class="nav-link" href="{% url 'relcaixa_santoantonio' %}">Santo Antônio</a></li>
+      <li><a class="nav-link" href="{% url 'relcaixa_belacha' %}">Bela Chã</a></li>
+      <li><a class="nav-link" href="{% url 'relcaixa_escorregao' %}">Escorregão</a></li>
+    </ul>
+  </li>
+</ul>

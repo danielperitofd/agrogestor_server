@@ -1,0 +1,159 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Relatório Financeiro - ESCORREGÃO{% endblock %}
+{% block content %}
+
+<!-- Título -->
+<div class="text-center mb-5">
+  <h2 class="fw-bold">Relatório Financeiro - ESCORREGÃO</h2>
+  <p class="text-muted">Resumo financeiro e operacional da fazenda</p>
+</div>
+
+<!-- Layout principal em 2 colunas -->
+<div class="row g-4">
+  <!-- COLUNA ESQUERDA -->
+  <div class="col-lg-8 d-flex flex-column">
+    
+    <!-- Cards -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-3 col-sm-6">
+        <div class="card text-bg-success h-100 shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title">Receita Total</h5>
+            <p class="card-text fs-4">R$ {{ receita }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card text-bg-danger h-100 shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title">Despesa Total</h5>
+            <p class="card-text fs-4">R$ {{ despesa }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card text-bg-primary h-100 shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title">Saldo</h5>
+            <p class="card-text fs-4">R$ {{ saldo }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-6">
+        <div class="card text-bg-warning h-100 shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title">Animais</h5>
+            <p class="card-text fs-4">{{ animais }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row g-4 flex-grow-1">
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Receita x Despesa Mensal</h5>
+            <canvas id="chartReceitaDespesa"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Despesas por Categoria</h5>
+            <canvas id="chartDespesasCategorias"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Serviços Utilizados</h5>
+            <canvas id="chartServicos"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Insumos Adquiridos</h5>
+            <canvas id="chartInsumos"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLUNA DIREITA (MAPA) -->
+  <div class="col-lg-4">
+    <div class="card shadow-sm h-100">
+      <div class="card-body d-flex flex-column justify-content-between">
+        <div>
+          <h5 class="card-title">Localização da Fazenda - ESCORREGÃO</h5>
+          <p class="mb-3">📍 Cidade: Garanhuns - PE</p>
+        </div>
+        <div class="bg-light border rounded flex-grow-1 d-flex align-items-center justify-content-center text-muted">
+          [Mapa interativo futuramente]
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCRIPTS -->
+<script>
+  const dados = JSON.parse('{{ grafico_mensal|safe|escapejs }}');
+  const labels = dados.map(d => d.mes);
+  const receitas = dados.map(d => d.receita);
+  const despesas = dados.map(d => d.despesa);
+
+  new Chart(document.getElementById('chartReceitaDespesa'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        { label: 'Receitas', data: receitas, backgroundColor: '#1a73e8' },
+        { label: 'Despesas', data: despesas, backgroundColor: '#e53935' }
+      ]
+    }
+  });
+
+  new Chart(document.getElementById('chartDespesasCategorias'), {
+    type: 'bar',
+    data: {
+      labels: ['Ração', 'Veterinário', 'Transporte', 'Manutenção'],
+      datasets: [{ label: 'R$', data: [25000, 8000, 5000, 7000], backgroundColor: '#fb8c00' }]
+    },
+    options: { indexAxis: 'y' }
+  });
+
+  new Chart(document.getElementById('chartServicos'), {
+    type: 'pie',
+    data: {
+      labels: ['Veterinário', 'Transporte', 'Ração', 'Outros'],
+      datasets: [{
+        data: [30, 15, 40, 15],
+        backgroundColor: ['#1a73e8','#43a047','#fb8c00','#8e24aa']
+      }]
+    }
+  });
+
+  new Chart(document.getElementById('chartInsumos'), {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai'],
+      datasets: [{
+        label: 'Insumos (kg)',
+        data: [200, 250, 220, 280, 300],
+        borderColor: '#43a047',
+        backgroundColor: 'rgba(67,160,71,0.2)',
+        fill: true,
+        tension: 0.3
+      }]
+    }
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,169 @@
+<!-- templates/lancamentos/despesas.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Despesas - AgroGestor</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background-color: #f9fafb;
+      padding: 40px;
+      display: flex;
+      justify-content: center;
+    }
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+      width: 600px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #007f5f;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+      font-weight: 600;
+    }
+    select, input {
+      width: 100%;
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 0.3rem;
+      font-size: 1rem;
+    }
+    .campo-linha {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .campo-linha input[type="number"] {
+      width: 80px;
+    }
+    .rateio {
+      margin-top: 1.5rem;
+      background-color: #f0fdf4;
+      padding: 1rem;
+      border-radius: 10px;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      margin-top: 1.5rem;
+      background-color: #007f5f;
+      color: white;
+      border: none;
+      padding: 0.7rem;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .btn:hover {
+      background-color: #005f44;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Lançamento de Despesa</h2>
+
+    <label for="categoria_despesa">Categoria:</label>
+    <select id="categoria_despesa">
+      <option value="">Selecione...</option>
+      <option value="encarregado">Encarregado</option>
+      <option value="vaqueiro">Vaqueiro</option>
+      <option value="assistencia">Assistência Técnica / Combustíveis</option>
+      <option value="compras_animais">Compras de Animais</option>
+      <option value="materiais">Materiais e Utensílios</option>
+      <option value="combustiveis">Combustíveis</option>
+    </select>
+
+    <div id="extraCampos"></div>
+
+    <label for="valor">Valor (R$):</label>
+    <input type="text" id="valor" placeholder="0,00">
+
+    <div class="rateio">
+      <label>Rateio por Centro de Custo</label>
+      <div class="campo-linha">
+        <select>
+          <option>Vacas</option>
+          <option>Cabras</option>
+          <option>Cavalos</option>
+        </select>
+        <input type="number" min="0" max="100" placeholder="%" class="percentual" oninput="atualizarResta()">
+        <input type="text" disabled id="resta" value="100%" style="width:80px;">
+      </div>
+    </div>
+
+    <button class="btn" onclick="validarFormulario()">Salvar</button>
+  </div>
+
+  <script>
+    const categoriaSelect = document.getElementById('categoria_despesa');
+    const extraCampos = document.getElementById('extraCampos');
+
+    categoriaSelect.addEventListener('change', function() {
+      const cat = this.value;
+      extraCampos.innerHTML = '';
+
+      if (cat === 'encarregado' || cat === 'vaqueiro') {
+        extraCampos.innerHTML = `
+          <label for="nome">Nome do ${cat}:</label>
+          <select id="nome"><option>Selecione...</option></select>
+          <label for="obs">Observação:</label>
+          <input type="text" id="obs" placeholder="none">
+        `;
+      } else if (cat === 'assistencia') {
+        extraCampos.innerHTML = `
+          <label><input type="checkbox" id="forn_local"> Fornecedor Local</label>
+          <label>Fornecedor:</label>
+          <select id="fornecedor"><option>Selecione...</option></select>
+          <div id="dadosLocal" style="display:none;">
+            <label>Nome:</label><input type="text">
+            <label>Telefone:</label><input type="text">
+            <label>Email:</label><input type="email">
+          </div>
+        `;
+        document.getElementById('forn_local').addEventListener('change', e=>{
+          document.getElementById('fornecedor').disabled = e.target.checked;
+          document.getElementById('dadosLocal').style.display = e.target.checked ? 'block' : 'none';
+        });
+      }
+    });
+
+    // Máscara de valor
+    document.getElementById('valor').addEventListener('input', function(e){
+      let value = e.target.value.replace(/\D/g,'');
+      value = (value/100).toFixed(2).replace('.',',');
+      e.target.value = 'R$ ' + value;
+    });
+
+    function atualizarResta() {
+      const perc = document.querySelector('.percentual');
+      const valor = parseFloat(perc.value) || 0;
+      const resta = 100 - valor;
+      document.getElementById('resta').value = resta + '%';
+      if (valor > 100) {
+        alert('O percentual não pode ultrapassar 100%.');
+        perc.value = '';
+        document.getElementById('resta').value = '100%';
+      }
+    }
+
+    function validarFormulario() {
+      const cat = categoriaSelect.value;
+      if (!cat) {
+        alert('Selecione uma categoria!');
+        return;
+      }
+      alert('Formulário validado! (etapa de salvar será implementada depois)');
+    }
+  </script>
+</body>
+</html>

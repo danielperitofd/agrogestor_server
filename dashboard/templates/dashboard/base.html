@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+{% load static %}
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}AgroGestor{% endblock %}</title>
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+  
+
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+  <!-- Header fixo no topo -->
+  <header class="bg-success text-white p-3 d-flex justify-content-between align-items-center">
+    <h1 class="h4 m-0">Gestão de Fazendas</h1>
+    <div class="d-flex align-items-center">
+      <nav class="d-none d-md-block me-3">Usuário | Configurações</nav>
+      <button class="btn btn-outline-light d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Conteúdo principal -->
+  <main class="flex-grow-1">
+    <div class="container-fluid py-3">
+      <div class="row">
+        <!-- Sidebar fixa (desktop) -->
+        <nav class="col-md-3 col-lg-2 bg-light sidebar py-4 d-none d-md-block border-end">
+          {% include "dashboard/sidebar.html" %}
+        </nav>
+
+        <!-- Sidebar offcanvas (mobile) -->
+        <div class="offcanvas offcanvas-start d-md-none" tabindex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="sidebarMenuLabel">Menu</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Fechar"></button>
+          </div>
+          <div class="offcanvas-body">
+            {% include "dashboard/sidebar.html" %}
+          </div>
+        </div>
+
+        <!-- Bloco de conteúdo -->
+        <div class="col-12 col-md-9 col-lg-10 py-4">
+          <div class="container">
+            {% block content %}{% endblock %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer fixo com Bootstrap -->
+  <footer class="bg-dark text-white text-center py-3 mt-auto">
+    <p class="mb-1">
+      <strong>AgroGestor</strong> &copy; 2025 — Sistema de Gestão Rural |
+      “Eficiência no campo, inteligência na gestão.”
+    </p>
+    <p class="small mb-0">
+      Desenvolvido por <strong>Equipe iMaestry</strong> | Versão 2.1.0<br>
+      Contato: <a href="mailto:danielperitofd@gmail.com.br" class="text-white text-decoration-underline">danielperitofd@gmail.com.br</a> |
+      (87) 99920-4532
+    </p>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      lucide.createIcons();
+      const submenuBtn = document.querySelector(".submenu-toggle");
+      const submenu = document.querySelector(".submenu-links");
+      if (submenuBtn) {
+        submenuBtn.addEventListener("click", () => {
+          submenu.style.display = submenu.style.display === "block" ? "none" : "block";
+        });
+      }
+    });
+  </script>
+</body>
+</html>

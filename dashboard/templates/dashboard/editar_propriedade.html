@@ -1,0 +1,118 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Editar Propriedade{% endblock %}
+{% block content %}
+
+<div class="container py-4">
+
+  <!-- Cabeçalho -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-success mb-0">
+      <i class="fa-solid fa-pen-to-square me-2"></i>Editar Propriedade
+    </h2>
+    <a href="{% url 'propriedades' %}" class="btn btn-outline-secondary">
+      <i class="fa-solid fa-tractor me-1"></i> Minhas Propriedades
+    </a>
+  </div>
+
+  <!-- Alerta de erro -->
+  {% if form.errors %}
+  <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+    <strong>Erro ao salvar:</strong><br>
+    {% for field in form %}
+      {% for error in field.errors %}
+        {{ error }}<br>
+      {% endfor %}
+    {% endfor %}
+    {% for error in form.non_field_errors %}
+      {{ error }}<br>
+    {% endfor %}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+  </div>
+  {% endif %}
+
+  <!-- Mensagem de sucesso -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+        <i class="fa-solid fa-circle-check me-2"></i>{{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <div class="row g-4">
+
+    <!-- Formulário -->
+    <div class="col-lg-7">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="row mb-3">
+              <div class="col-md-8">
+                <label for="id_nome" class="form-label fw-semibold">Nome da Fazenda</label>
+                <input type="text" name="nome" id="id_nome" class="form-control"
+                       placeholder="Ex: Fazenda Boa Vista"
+                       value="{{ form.nome.value|default_if_none:'' }}" required>
+              </div>
+              <div class="col-md-4">
+                <label for="id_area" class="form-label fw-semibold">Área (ha)</label>
+                <input type="number" name="area" id="id_area" class="form-control"
+                       placeholder="Ex: 120"
+                       value="{{ form.area.value|default_if_none:'' }}" required>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="id_rendimento" class="form-label fw-semibold">Rendimento Estimado</label>
+              <input type="text" name="rendimento" id="id_rendimento" class="form-control"
+                     placeholder="Ex: 80 sacas/ha"
+                     value="{{ form.rendimento.value|default_if_none:'' }}">
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-4">
+              <button type="submit" class="btn btn-success">
+                <i class="fa-solid fa-save me-1"></i> Salvar
+              </button>
+              <button type="reset" class="btn btn-outline-danger">
+                <i class="fa-solid fa-xmark me-1"></i> Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Painel de informações -->
+    <div class="col-lg-5">
+      <div class="card shadow-sm border-0 bg-light h-100">
+        <div class="card-body p-4">
+          <h5 class="fw-bold text-success mb-3">
+            <i class="fa-solid fa-circle-info me-2"></i>Informações
+          </h5>
+
+          <p class="fw-semibold mb-1">Campos Obrigatórios:</p>
+          <ul class="mb-3">
+            <li>Nome da Fazenda</li>
+            <li>Área em hectares</li>
+          </ul>
+
+          <p class="fw-semibold mb-1">Campos Opcionais:</p>
+          <ul class="mb-3">
+            <li>Rendimento estimado</li>
+          </ul>
+
+          <p class="fw-semibold mb-1">Dicas:</p>
+          <ul class="mb-0">
+            <li>Use nomes únicos para facilitar a identificação.</li>
+            <li>Área deve ser numérica e positiva.</li>
+            <li>Rendimento pode ser estimado por cultura ou safra.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

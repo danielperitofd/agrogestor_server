@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Comprovante de Cadastro - {{ fornecedor.nome_fantasia }}</title>
+
+     <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            padding: 30px;
+            color: #000;
+        }
+        .cabecalho {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .cabecalho h2 {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .cabecalho h3 {
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .cabecalho h4 {
+            font-size: 13px;
+            margin-top: 10px;
+            text-decoration: underline;
+        }
+        table.dados-cnpj {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table.dados-cnpj th {
+            text-align: left;
+            width: 30%;
+            padding: 6px;
+            background-color: #f2f2f2;
+            border-bottom: 1px solid #ccc;
+        }
+        table.dados-cnpj td {
+            padding: 6px;
+            border-bottom: 1px solid #ccc;
+        }
+        .rodape {
+            margin-top: 40px;
+            text-align: right;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+
+        <div class="cabecalho">
+            <h2>REPÚBLICA FEDERATIVA DO BRASIL</h2>
+            <h3>CADASTRO NACIONAL DA PESSOA JURÍDICA</h3>
+            <h4>COMPROVANTE DE INSCRIÇÃO E DE SITUAÇÃO CADASTRAL</h4>
+        </div>
+
+        <table class="dados-cnpj">
+            <tr><th>CNPJ:</th><td>{{ dados.cnpj }}</td></tr>
+            <tr><th>Razão Social:</th><td>{{ dados.razao_social }}</td></tr>
+            <tr><th>Nome Fantasia:</th><td>{{ dados.nome_fantasia }}</td></tr>
+            <tr><th>Data de Abertura:</th><td>{{ dados.data_abertura }}</td></tr>
+            <tr><th>Natureza Jurídica:</th><td>{{ dados.natureza_juridica }}</td></tr>
+            <tr><th>Endereço:</th><td>{{ dados.logradouro }}, {{ dados.numero }} - {{ dados.bairro }}</td></tr>
+            <tr><th>Município:</th><td>{{ dados.municipio }} - {{ dados.uf }}</td></tr>
+            <tr><th>CEP:</th><td>{{ dados.cep }}</td></tr>
+            <tr><th>Telefone:</th><td>{{ dados.telefone }}</td></tr>
+            <tr><th>E-mail:</th><td>{{ dados.email }}</td></tr>
+            <tr><th>Situação Cadastral:</th><td>{{ dados.situacao_cadastral }}</td></tr>
+
+        </table>
+
+
+        <div class="rodape">
+            <p>Emitido em: {{ now|date:"d/m/Y" }}</p>
+            <p>__________________________<br>Assinatura do Responsável</p>
+        </div>
+
+
+</body>
+</html>

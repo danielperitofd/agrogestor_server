@@ -1,0 +1,152 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Bem-vindo{% endblock %}
+{% block content %}
+
+<style>
+  .card-fazenda {
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(145deg, #ffffff, #f3f4f6);
+    transition: all 0.3s ease-in-out;
+  }
+  .card-fazenda:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+  }
+  .card-fazenda .card-title {
+    font-weight: 600;
+    color: #212529;
+  }
+  .card-fazenda .card-subtitle {
+    font-size: 0.9rem;
+    color: #6c757d;
+  }
+  .card-fazenda p {
+    margin: 0.25rem 0;
+  }
+  .text-positivo { color: #198754; font-weight: 600; }
+  .text-negativo { color: #dc3545; font-weight: 600; }
+
+  .kpi-card {
+    border-radius: 15px;
+    transition: transform 0.2s ease-in-out;
+  }
+  .kpi-card:hover {
+    transform: scale(1.03);
+  }
+
+  .section-title {
+    font-weight: 600;
+    color: #0d6efd;
+    margin-bottom: 1rem;
+  }
+</style>
+
+<div class="container py-4">
+  <div class="text-center mb-5">
+    <h1 class="display-5 fw-bold text-primary">Bem-vindo ao AgroGestor</h1>
+    <p class="lead text-secondary">Resumo financeiro das propriedades — Janeiro/25</p>
+  </div>
+
+  <!-- Fazendas -->
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+    {% for fazenda in fazendas %}
+      <div class="col">
+        <a href="{% url fazenda.url %}" class="text-decoration-none">
+          <div class="card card-fazenda shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ fazenda.nome }}</h5>
+              <p class="card-subtitle mb-2">📅 Janeiro/25</p>
+              <p><strong>Receitas:</strong> <span class="text-positivo">R$ 1.292,34</span></p>
+              <p><strong>Despesas:</strong> <span class="text-negativo">R$ 75.812,90</span></p>
+              <p><strong>Variação:</strong> <span class="text-negativo">-5,767%</span></p>
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- Resumo financeiro -->
+  <h4 class="section-title">💰 Resumo Financeiro</h4>
+  <div class="row g-4 mb-5">
+    <div class="col-md-4">
+      <div class="card text-white bg-success kpi-card h-100 shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="card-title">Receita Total</h5>
+          <p class="fs-4 fw-bold">R$ 5.832,50</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card text-white bg-danger kpi-card h-100 shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="card-title">Despesa Total</h5>
+          <p class="fs-4 fw-bold">R$ 180.220,00</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card bg-light kpi-card h-100 shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="card-title text-primary">Saldo Consolidado</h5>
+          <canvas id="saldoChart" height="100"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <h4 class="section-title">📈 Indicadores-Chave</h4>
+  <div class="row g-4 mb-5">
+    <div class="col-md-4">
+      <div class="card border-danger kpi-card h-100 shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="card-title text-danger">🚨 Maior Prejuízo</h5>
+          <p>Fazenda SJ Vacas (-R$ 74.520,56)</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-success kpi-card h-100 shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="card-title text-success">🏆 Melhor Resultado</h5>
+          <p>Fazenda Bela Chã (+R$ 2.340,00)</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card border-info kpi-card h-100 shadow-sm">
+        <div class="card-body text-center">
+          <h5 class="card-title text-info">📊 Variação vs Dez/24</h5>
+          <p>-3,2%</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Gráfico -->
+<script>
+  const ctx = document.getElementById('saldoChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Receita', 'Despesa', 'Saldo'],
+      datasets: [{
+        label: 'Valores (R$)',
+        data: [5832.50, 180220.00, -174387.50],
+        backgroundColor: ['#198754', '#dc3545', '#0d6efd']
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+</script>
+
+{% endblock %}

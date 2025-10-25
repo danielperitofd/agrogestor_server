@@ -1,0 +1,189 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Cadastro de Fornecedores{% endblock %}
+{% block content %}
+
+{% if form.errors %}
+  <div class="position-fixed top-0 start-50 translate-middle-x mt-3 z-3" id="erro-alerta">
+    <div class="alert alert-danger text-center shadow-lg" role="alert">
+      <strong>Erro ao salvar:</strong><br>
+      {% for field in form %}
+        {% for error in field.errors %}
+          {{ error }}<br>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        {{ error }}<br>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <!-- Formulário -->
+    <div class="col-md-7">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">📝 Novo Fornecedor</h4>
+        </div>
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+
+            <!-- CNPJ + Botões -->
+            <div class="mb-3 row">
+              <div class="col-md-8">
+                <label for="id_cnpj" class="form-label">CNPJ:</label>
+                <input type="text" class="form-control" name="cnpj" id="id_cnpj" placeholder="00.000.000/0000-00"
+                  value="{{ form.cnpj.value|default_if_none:'' }}" required>
+              </div>
+              <div class="col-md-4 d-flex align-items-end gap-2">
+                <button type="button" onclick="consultarCNPJ()" class="btn btn-secondary w-50">
+                  <i class="fas fa-search"></i>
+                </button>
+                <button type="button" onclick="window.print()" class="btn btn-secondary w-50">
+                  <i class="fas fa-print"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Razão Social + Inscrição Estadual -->
+            <div class="mb-3 row">
+              <div class="col-md-6">
+                <label for="id_razao_social" class="form-label">Razão Social:</label>
+                <input type="text" class="form-control" name="razao_social" id="id_razao_social"
+                  value="{{ form.razao_social.value|default_if_none:'' }}">
+              </div>
+              <div class="col-md-6">
+                <label for="id_inscricao_estadual" class="form-label">Inscrição Estadual:</label>
+                <input type="text" class="form-control" name="inscricao_estadual" id="id_inscricao_estadual"
+                  value="{{ form.inscricao_estadual.value|default_if_none:'' }}">
+              </div>
+            </div>
+
+            <!-- Nome Fantasia -->
+            <div class="mb-3">
+              <label for="id_nome_fantasia" class="form-label">Nome Fantasia:</label>
+              <input type="text" class="form-control" name="nome_fantasia" id="id_nome_fantasia"
+                value="{{ form.nome_fantasia.value|default_if_none:'' }}" required>
+            </div>
+
+            <!-- Endereço -->
+            <div class="mb-3">
+              <label for="id_endereco" class="form-label">Endereço:</label>
+              <input type="text" class="form-control" name="endereco" id="id_endereco"
+                value="{{ form.endereco.value|default_if_none:'' }}">
+            </div>
+
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="id_email" class="form-label">E-mail:</label>
+              <input type="email" class="form-control" name="email" id="id_email"
+                value="{{ form.email.value|default_if_none:'' }}">
+            </div>
+
+            <!-- Contato + Telefone -->
+            <div class="mb-3 row">
+              <div class="col-md-6">
+                <label for="id_contato" class="form-label">Nome do Contato:</label>
+                <input type="text" class="form-control" name="contato" id="id_contato"
+                  value="{{ form.contato.value|default_if_none:'' }}">
+              </div>
+              <div class="col-md-6">
+                <label for="id_telefone" class="form-label">Telefone:</label>
+                <input type="text" class="form-control" name="telefone" id="id_telefone"
+                  value="{{ form.telefone.value|default_if_none:'' }}">
+              </div>
+            </div>
+
+            <!-- Botões -->
+            <div class="d-flex justify-content-between mt-4">
+              <button class="btn btn-primary" type="submit">Salvar</button>
+              <button class="btn btn-danger" type="reset">Cancelar</button>
+              <a href="{% url 'lista_fornecedores' %}" class="btn btn-secondary">
+                <i class="fas fa-users"></i> Fornecedores
+              </a>
+            </div>
+
+            {% if messages %}
+              {% for message in messages %}
+                <div class="mt-3" id="sucesso-alerta">
+                  <div class="alert alert-success text-center shadow-lg" role="alert">
+                    <strong>{{ message }}</strong>
+                  </div>
+                </div>
+              {% endfor %}
+            {% endif %}
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Informações -->
+    <div class="col-md-5">
+      <div class="card shadow-sm">
+        <div class="card-header bg-info text-white">
+          <h5 class="mb-0">📌 INFORMAÇÕES</h5>
+        </div>
+        <div class="card-body">
+          <p><strong>Dados Obrigatórios:</strong></p>
+          <ul>
+            <li>CNPJ</li>
+            <li>Nome Fantasia</li>
+          </ul>
+          <p><strong>Dados Opcionais:</strong></p>
+          <ul>
+            <li>Razão Social</li>
+            <li>Inscrição Estadual</li>
+            <li>Endereço</li>
+            <li>Telefone</li>
+            <li>E-mail</li>
+            <li>Contato</li>
+          </ul>
+          <p><strong>Dicas:</strong></p>
+          <ul>
+            <li>CNPJ deve estar ativo e único no sistema</li>
+            <li>Use o formato: <code>00.000.000/0000-00</code></li>
+            <li>Fornecedores ativos aparecem nas solicitações</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function consultarCNPJ() {
+  const cnpj = document.querySelector('[name="cnpj"]').value;
+  const cnpjLimpo = cnpj.replace(/\D/g, '');
+
+  fetch(`/ajax/consulta-cnpj/?cnpj=${cnpjLimpo}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.erro) {
+        alert(data.erro);
+      } else {
+        document.querySelector('[name="nome_fantasia"]').value = data.nome_fantasia || '';
+        document.querySelector('[name="razao_social"]').value = data.razao_social || '';
+        document.querySelector('[name="endereco"]').value = data.endereco || '';
+        document.querySelector('[name="telefone"]').value = data.telefone || '';
+        document.querySelector('[name="email"]').value = data.email || '';
+        document.querySelector('[name="cnpj"]').value = cnpjLimpo;
+      }
+    })
+    .catch(() => alert("Erro ao consultar CNPJ."));
+}
+
+document.addEventListener('click', function (e) {
+  const alerta = document.getElementById('erro-alerta');
+  if (alerta && !alerta.contains(e.target)) {
+    alerta.style.display = 'none';
+  }
+  const sucesso = document.getElementById('sucesso-alerta');
+  if (sucesso && !sucesso.contains(e.target)) {
+    sucesso.style.display = 'none';
+  }
+});
+</script>
+
+{% endblock %}
