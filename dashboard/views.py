@@ -4,6 +4,7 @@ from xhtml2pdf import pisa
 from django.db.models import Q
 from .utils import consultar_cnpj
 import pdfkit  # ou use xhtml2pdf ou WeasyPrint
+from datetime import date
 
 import django_filters
 from django_filters.views import FilterView
@@ -39,6 +40,10 @@ def welcome(request):
     ]
     return render(request, 'dashboard/welcome.html', {'fazendas': fazendas})
 
+def roadmap(request):
+    data_atual = date.today().strftime("%d/%m/%Y")
+    return render(request, 'dashboard/roadmap.html', {'data_atual': data_atual})
+
 def relcaixa_sjvacas(request):
     context = {
         'receita': 15000,
@@ -56,10 +61,9 @@ def relcaixa_sjvacas(request):
     return render(request, 'relcaixa_sjvacas.html', context)
 
 def listar_propriedades(request):
-    propriedades = Propriedade.objects.all()  # ou uma lista mock, se quiser só testar
-    return render(request, 'dashboard/listar_propriedades.html', {
-        'propriedades': propriedades
-    })
+    propriedades = Propriedade.objects.all()
+    return render(request, 'dashboard/propriedades.html', {'propriedades': propriedades})
+
 
 def relatorios(request):
     return render(request, 'dashboard/relatorios.html')
@@ -137,7 +141,7 @@ def relcaixa_belacha(request):
         }
 
 
-        return render(request, "dashboard/relcaixa_bleacha.html", context)
+        return render(request, "dashboard/relcaixa_belacha.html", context)
 
 def relcaixa_escorregao(request):
         context = {

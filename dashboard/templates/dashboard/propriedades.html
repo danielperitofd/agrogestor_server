@@ -56,31 +56,35 @@
 
   <!-- Slideshow -->
   {% if propriedade %}
-  <div class="card shadow-sm border-0 mb-4">
-    <div class="card-body">
-      <h4 class="fw-semibold mb-3">
-        <i class="fa-solid fa-image me-2"></i>Fotos da Fazenda {{ propriedade.nome }}
-      </h4>
+    {% else %}
+      <div class="alert alert-warning">Nenhuma propriedade selecionada para exibir fotos.</div>
+    {% endif %}
 
-      <div class="position-relative">
-        {% for foto in propriedade.fotos.all %}
-          <div class="mySlides fade text-center">
-            <img src="{{ foto.url }}" class="img-fluid rounded shadow-sm" alt="Foto da fazenda {{ propriedade.nome }}" style="max-height: 400px;">
-          </div>
-        {% endfor %}
+    <div class="card shadow-sm border-0 mb-4">
+      <div class="card-body">
+        <h4 class="fw-semibold mb-3">
+          <i class="fa-solid fa-image me-2"></i>Fotos da Fazenda {{ propriedade.nome }}
+        </h4>
 
-        <a class="position-absolute top-50 start-0 translate-middle-y text-dark fs-3 px-3" onclick="plusSlides(-1)">❮</a>
-        <a class="position-absolute top-50 end-0 translate-middle-y text-dark fs-3 px-3" onclick="plusSlides(1)">❯</a>
-      </div>
+        <div class="position-relative">
+          {% for foto in propriedade.fotos.all %}
+            <div class="mySlides fade text-center">
+              <img src="{{ foto.url }}" class="img-fluid rounded shadow-sm" alt="Foto da fazenda {{ propriedade.nome }}" style="max-height: 400px;">
+            </div>
+          {% endfor %}
 
-      <div class="text-center mt-3">
-        {% for foto in propriedade.fotos.all %}
-          <span class="dot mx-1" onclick="currentSlide({{ forloop.counter }})" style="cursor:pointer; height:12px; width:12px; background:#bbb; border-radius:50%; display:inline-block;"></span>
-        {% endfor %}
+          <a class="position-absolute top-50 start-0 translate-middle-y text-dark fs-3 px-3" onclick="plusSlides(-1)">❮</a>
+          <a class="position-absolute top-50 end-0 translate-middle-y text-dark fs-3 px-3" onclick="plusSlides(1)">❯</a>
+        </div>
+
+        <div class="text-center mt-3">
+          {% for foto in propriedade.fotos.all %}
+            <span class="dot mx-1" onclick="currentSlide({forloop,counter})" style="cursor:pointer; height:12px; width:12px; background:#bbb; border-radius:50%; display:inline-block;"></span>
+          {% endfor %}
+        </div>
       </div>
     </div>
-  </div>
-  {% endif %}
+
 
   <!-- Tabela de propriedades -->
   <div class="card shadow-sm border-0">
@@ -129,27 +133,32 @@
 </div>
 
 <!-- Script do slideshow -->
+<!-- Script do slideshow -->
 <script>
-let slideIndex = 1;
-showSlides(slideIndex);
+  let slideIndex = 1;
+  document.addEventListener("DOMContentLoaded", () => {
+    showSlides(slideIndex);
+    setInterval(() => { plusSlides(1); }, 5000);
+  });
 
-function plusSlides(n) { showSlides(slideIndex += n); }
-function currentSlide(n) { showSlides(slideIndex = n); }
+  function plusSlides(n) { showSlides(slideIndex += n); }
+  function currentSlide(n) { showSlides(slideIndex = n); }
 
-function showSlides(n) {
-  let i;
-  let slides = document.getElementsByClassName("mySlides");
-  let dots = document.getElementsByClassName("dot");
-  if (slides.length === 0) return;
-  if (n > slides.length) {slideIndex = 1}
-  if (n < 1) {slideIndex = slides.length}
-  for (i = 0; i < slides.length; i++) slides[i].style.display = "none";
-  for (i = 0; i < dots.length; i++) dots[i].style.background = "#bbb";
-  slides[slideIndex-1].style.display = "block";
-  dots[slideIndex-1].style.background = "#198754"; // verde bootstrap
-}
+  function showSlides(n) {
+    const slides = document.getElementsByClassName("mySlides");
+    const dots = document.getElementsByClassName("dot");
+    if (slides.length === 0) return;
 
-setInterval(() => { plusSlides(1); }, 5000);
+    if (n > slides.length) slideIndex = 1;
+    if (n < 1) slideIndex = slides.length;
+
+    for (let i = 0; i < slides.length; i++) slides[i].style.display = "none";
+    for (let i = 0; i < dots.length; i++) dots[i].style.background = "#bbb";
+
+    slides[slideIndex - 1].style.display = "block";
+    dots[slideIndex - 1].style.background = "#198754"; // verde bootstrap
+  }
 </script>
+
 
 {% endblock %}

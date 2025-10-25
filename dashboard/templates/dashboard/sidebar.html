@@ -1,35 +1,40 @@
 {% load static %}
 
-
-<div class="text-center mb-4">
-  <div class="avatar-story">
-    <img src="{% static 'images/mayra_almeida.JPG' %}" alt="Daniel">
+<div class="text-center mb-4 p-3 border-bottom">
+  <div class="avatar-story mx-auto rounded-circle overflow-hidden" style="width:90px;height:90px;">
+    <img src="{% static 'images/mayra_almeida.JPG' %}" alt="Profile" class="img-fluid rounded-circle">
   </div>
   <p class="mt-2 mb-0 fw-bold">Mayra Almeida</p>
 </div>
 
-
-<h2 class="text-center fw-bold mb-4">AgroGestor🌿</h2>
+<h5 class="text-center fw-bold mb-4 text-success">AgroGestor 🌿</h5>
 
 <ul class="nav flex-column">
+  <!-- GERAL -->
   <li class="nav-item text-muted fw-bold px-3">GERAL</li>
-  <li class="nav-item"><a class="nav-link" href="{% url 'welcome' %}"><i data-lucide="layout-dashboard"></i> Dashboard</a></li>
-  <li class="nav-item"><a class="nav-link" href="{% url 'propriedades' %}"><i data-lucide="map"></i> Propriedades</a></li>
+  <li class="nav-item"><a class="nav-link d-flex align-items-center" href="{% url 'welcome' %}"><i class="fa-solid fa-chart-line me-2 text-success"></i> Dashboard</a></li>
+  <li class="nav-item"><a class="nav-link d-flex align-items-center" href="{% url 'propriedades' %}"><i class="fa-solid fa-map me-2 text-success"></i> Propriedades</a></li>
 
+  <!-- FINANCEIRO -->
   <li class="nav-item text-muted fw-bold px-3 mt-3">FINANCEIRO</li>
-  <li class="nav-item"><a class="nav-link" href="{% url 'lancamentos' %}"><i data-lucide="file-text"></i> Lançamentos</a></li>
-  <li class="nav-item"><a class="nav-link" href="{% url 'lista_despesas' %}"><i data-lucide="file-text"></i> Lista Despesas</a></li>
+  <li class="nav-item"><a class="nav-link d-flex align-items-center" href="{% url 'lancamentos' %}"><i class="fa-solid fa-file-invoice-dollar me-2 text-success"></i> Lançamentos</a></li>
+  <li class="nav-item"><a class="nav-link d-flex align-items-center" href="{% url 'lista_despesas' %}"><i class="fa-solid fa-list me-2 text-success"></i> Lista Despesas</a></li>
 
+  <!-- CADASTROS -->
   <li class="nav-item text-muted fw-bold px-3 mt-3">CADASTROS</li>
-  <li class="nav-item"><a class="nav-link" href="{% url 'cadas_fornecedores' %}"><i data-lucide="users"></i> Fornecedores</a></li>
-  <li class="nav-item"><a class="nav-link" href="{% url 'cadas_propriedades' %}"><i data-lucide="home"></i> Cadastrar Propriedades</a></li>
-  <li class="nav-item"><a class="nav-link" href="{% url 'cadastrar_colaborador' %}"><i data-lucide="users"></i> Colaboradores</a></li>
+  <li class="nav-item"><a class="nav-link d-flex align-items-center" href="{% url 'cadas_fornecedores' %}"><i class="fa-solid fa-truck-field me-2 text-success"></i> Fornecedores</a></li>
+  <li class="nav-item"><a class="nav-link d-flex align-items-center" href="{% url 'cadas_propriedades' %}"><i class="fa-solid fa-seedling me-2 text-success"></i> Cadastrar Propriedades</a></li>
+  <li class="nav-item"><a class="nav-link d-flex align-items-center" href="{% url 'cadastrar_colaborador' %}"><i class="fa-solid fa-users me-2 text-success"></i> Colaboradores</a></li>
+  <li class="nav-item"><a class="nav-link d-flex align-items-center" href="{% url 'roadmap' %}"><i class="fa-solid fa-route me-2 text-success"></i> RoadMap</a></li>
 
+  <!-- RELATÓRIOS -->
   <li class="nav-item mt-3">
-    <button class="btn btn-outline-secondary w-100 text-start submenu-toggle">
-      <i data-lucide="bar-chart-2"></i> Relatórios <span class="float-end">▾</span>
-    </button>
-    <ul class="list-unstyled submenu-links mt-2 ps-3" style="display: none;">
+    <div class="btn btn-outline-success w-100 text-start submenu-toggle d-flex align-items-center" role="button">
+      <i class="fa-solid fa-chart-column me-2"></i> Relatórios
+      <span class="ms-auto toggle-icon">▾</span>
+    </div>
+
+    <ul class="list-unstyled submenu-links mt-2 ps-4" style="display: none;">
       <li><a class="nav-link" href="{% url 'relcaixa_sjvacas' %}">SJ Vacas</a></li>
       <li><a class="nav-link" href="{% url 'relcaixa_sjcabras' %}">SJ Cabras</a></li>
       <li><a class="nav-link" href="{% url 'relcaixa_cavalos' %}">Cavalos</a></li>
@@ -38,4 +43,34 @@
       <li><a class="nav-link" href="{% url 'relcaixa_escorregao' %}">Escorregão</a></li>
     </ul>
   </li>
+
 </ul>
+
+<!-- SCRIPT: submenu toggle + offcanvas close -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Alternar submenu (puro JS)
+  document.querySelectorAll('.submenu-toggle').forEach(toggle => {
+    toggle.addEventListener('click', function(e) {
+      e.stopPropagation();
+      const submenu = this.nextElementSibling;
+      const arrow = this.querySelector('.toggle-arrow');
+
+      const isHidden = (submenu.style.display === 'none' || submenu.style.display === '');
+      submenu.style.display = isHidden ? 'block' : 'none';
+      if (arrow) arrow.textContent = isHidden ? '▴' : '▾';
+    });
+  });
+
+  // Fechar offcanvas no mobile ao clicar num link (só se bootstrap existir)
+  const offcanvas = document.querySelector('#sidebarOffcanvas');
+  if (offcanvas && window.bootstrap && bootstrap.Offcanvas) {
+    offcanvas.querySelectorAll('a.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        const instance = bootstrap.Offcanvas.getInstance(offcanvas);
+        if (instance) instance.hide();
+      });
+    });
+  }
+});
+</script>

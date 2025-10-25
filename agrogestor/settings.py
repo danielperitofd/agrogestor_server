@@ -20,9 +20,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 SECRET_KEY = 'django-insecure--7dxiomwezh+crg%&lwn6$s#o_5xt%f4v**u6@9mqp+8jev6!_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-ALLOWED_HOSTS = ['agrogestor.miroutepe.com.br', 'www.agrogestor.miroutepe.com.br']
+#DEBUG = False
+#ALLOWED_HOSTS = ['agrogestor.miroutepe.com.br', 'www.agrogestor.miroutepe.com.br']
+DEBUG = True
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -77,13 +78,14 @@ WSGI_APPLICATION = 'agrogestor.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'agrogestor_db'),
-        'USER': os.getenv('DB_USER', 'danielgusdev'),
-        'PASSWORD': os.getenv('DB_PASSWORD', 'sua_senha_segura'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '5432'),
+        'NAME': 'agrogestor_db',
+        'USER': 'danielgusdev',
+        'PASSWORD': 'Dnov@0380', 
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
+
 
 
 # DATABASES = {

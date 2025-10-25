@@ -1,0 +1,55 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Roadmap do AgroGestor{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="text-center mb-4">
+    <h1 class="display-5 fw-bold text-success">✨ Roadmap do Sistema AgroGestor</h1>
+    <p class="text-muted">Status atualizado das principais funcionalidades e módulos do sistema</p>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle shadow-sm">
+      <thead class="table-success text-center">
+        <tr>
+          <th>Módulo Principal</th>
+          <th>Funcionalidade</th>
+          <th>Status</th>
+          <th>Detalhes / Ações Pendentes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td rowspan="3"><b>1. Estrutura Base</b></td><td>Projeto Django e Serviços</td><td class="text-success fw-bold">✅ OK</td><td>Em produção com Gunicorn e Nginx.</td></tr>
+        <tr><td>Banco de Dados PostgreSQL</td><td class="text-success fw-bold">✅ OK</td><td>Migrations aplicadas com sucesso.</td></tr>
+        <tr><td>Admin Django</td><td class="text-secondary fw-bold">⚪ Pendente</td><td>Revisar senha no arquivo .env para autenticação correta.</td></tr>
+
+        <tr><td rowspan="4"><b>2. Cadastros Gerais</b></td><td>Fornecedores</td><td class="text-success fw-bold">✅ OK</td><td>CRUD completo e PDF funcionando.</td></tr>
+        <tr><td>Propriedades / Fazendas</td><td class="text-success fw-bold">✅ OK</td><td>Upload de fotos e exibição em mapa.</td></tr>
+        <tr><td>Colaboradores</td><td class="text-warning fw-bold">🟡 Em progresso</td><td>Adicionar campos extras (CPF, RG, telefone).</td></tr>
+        <tr><td>Animais</td><td class="text-secondary fw-bold">⚪ Pendente</td><td>Model pronto, falta interface CRUD.</td></tr>
+
+        <tr><td rowspan="5"><b>3. Lançamentos Financeiros</b></td><td>Dashboard Financeiro</td><td class="text-success fw-bold">✅ OK</td><td>Cards de resumo dinâmicos.</td></tr>
+        <tr><td>Despesas</td><td class="text-warning fw-bold">🟡 Em progresso</td><td>JS dinâmico e validação visual pendente.</td></tr>
+        <tr><td>Receitas</td><td class="text-success fw-bold">✅ OK</td><td>Funcional e integrado ao model.</td></tr>
+        <tr><td>Investimentos</td><td class="text-secondary fw-bold">⚪ Pendente</td><td>Associar aos tipos de fazenda e animais.</td></tr>
+        <tr><td>Distribuição Percentual</td><td class="text-warning fw-bold">🟡 Em progresso</td><td>Validação e interface frontend pendente.</td></tr>
+
+        <tr><td rowspan="3"><b>4. Relatórios</b></td><td>Consolidado Mensal/Anual</td><td class="text-secondary fw-bold">⚪ Pendente</td><td>Necessita agregação por tipo de lançamento.</td></tr>
+        <tr><td>Por Propriedade (RelCaixa)</td><td class="text-secondary fw-bold">⚪ Pendente</td><td>Criar relatórios para cada fazenda com filtros.</td></tr>
+        <tr><td>Exportação PDF/CSV</td><td class="text-secondary fw-bold">⚪ Pendente</td><td>Previsto, ainda não implementado.</td></tr>
+
+        <tr><td rowspan="3"><b>5. Integrações e Usabilidade</b></td><td>Máscaras e Validações</td><td class="text-success fw-bold">✅ OK</td><td>Ativo em Fornecedores e Colaboradores.</td></tr>
+        <tr><td>Layout e Responsividade</td><td class="text-success fw-bold">✅ OK</td><td>Bootstrap + Lucide.</td></tr>
+        <tr><td>Sidebar + Roadmap</td><td class="text-success fw-bold">✅ OK</td><td>Link funcional e estilizado.</td></tr>
+
+        <tr><td rowspan="3"><b>6. Sistema e Servidor</b></td><td>Gunicorn + Systemd</td><td class="text-success fw-bold">✅ OK</td><td>Serviço ativo com restart automático.</td></tr>
+        <tr><td>Cloudflare Tunnel</td><td class="text-success fw-bold">✅ OK</td><td>Túnel estável com auto-reconnect.</td></tr>
+        <tr><td>Backup Automático</td><td class="text-secondary fw-bold">⚪ Pendente</td><td>Falta script cron para /etc/systemd e /var/www.</td></tr>
+
+        <tr><td rowspan="3"><b>7. Próximas Etapas Estratégicas</b></td><td>Login e Permissões</td><td class="text-secondary fw-bold">⚪ Pendente</td><td>Implementar sistema de usuários.</td></tr>
+        <tr><td>Gráficos e KPIs</td><td class="text-secondary fw-bold">⚪ Pendente</td><td>Adicionar visualização analítica.</td></tr>
+        <tr><td>Importação de Dados Antigos</td><td class="text-success fw-bold">✅ OK</td><td>Feito via CSV, estrutura validada.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
